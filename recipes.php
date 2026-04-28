@@ -170,12 +170,17 @@ $conn = getDB();
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
         }
+
+        /* Карточка рецепта - с фиксацией нижней части */
         .recipe-card {
             background: white;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .recipe-card:hover {
             transform: translateY(-5px);
@@ -188,20 +193,28 @@ $conn = getDB();
         }
         .recipe-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
         .recipe-content h3 {
             font-size: 20px;
             margin-bottom: 10px;
+            color: #4a3b2f;
         }
         .recipe-content p {
             color: #7f6e5d;
             margin-bottom: 15px;
             font-size: 14px;
+            flex: 1;
         }
         .recipe-meta {
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px solid #f0e0d0;
+            border-bottom: 1px solid #f0e0d0;
             font-size: 14px;
             color: #6b4e3a;
         }
@@ -215,6 +228,8 @@ $conn = getDB();
             border-radius: 30px;
             font-weight: bold;
             transition: 0.3s;
+            text-align: center;
+            margin-top: auto;
         }
         .recipe-btn:hover {
             background: #FF6B4A;
@@ -271,6 +286,7 @@ $conn = getDB();
         @media (max-width: 768px) {
             .nav-container { flex-direction: column; gap: 15px; }
             .footer-container { grid-template-columns: 1fr; }
+            .recipe-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -403,62 +419,44 @@ $conn = getDB();
     </footer>
 
     <script>
-        // Получаем все кнопки категорий и карточки рецептов
         const btns = document.querySelectorAll('.cat-btn');
         const cards = document.querySelectorAll('.recipe-card');
 
-        // Для каждой кнопки добавляем обработчик клика
         btns.forEach(btn => {
             btn.onclick = function() {
-                // Убираем активный класс у всех кнопок
                 btns.forEach(b => b.classList.remove('active'));
-                // Добавляем активный класс нажатой кнопке
                 this.classList.add('active');
-        
-                // Получаем ID выбранной категории
                 const cat = this.dataset.cat;
                 let visible = 0;
-        
-                // Фильтруем карточки
                 cards.forEach(card => {
                     if (cat === 'all' || card.dataset.cat === cat) {
-                        card.style.display = 'block';  // Показываем
+                        card.style.display = 'block';
                         visible++;
                     } else {
-                        card.style.display = 'none';   // Скрываем
+                        card.style.display = 'none';
                     }
                 });
-        
-                // Обновляем счетчик найденных рецептов
                 document.querySelector('.recipes-header span').innerText = `найдено ${visible} рецептов`;
             }
         });
         
-        // Поиск рецептов по названию и описанию (без перезагрузки страницы)
+        // Поиск рецептов по названию и описанию
         const searchInput = document.getElementById('searchInput');
 
         if (searchInput) {
             searchInput.addEventListener('keyup', function() {
-                // Получаем текст поиска в нижнем регистре
                 let filter = this.value.toLowerCase();
                 let visible = 0;
-        
-                // Перебираем все карточки рецептов
                 cards.forEach(card => {
-                    // Получаем заголовок и описание карточки
                     let title = card.querySelector('h3').innerText.toLowerCase();
                     let desc = card.querySelector('p').innerText.toLowerCase();
-            
-                    // Проверяем наличие искомого текста
                     if (title.includes(filter) || desc.includes(filter)) {
-                        card.style.display = 'block';   // Показываем карточку
-                        visible++;                       // Увеличиваем счетчик
+                        card.style.display = 'block';
+                        visible++;
                     } else {
-                        card.style.display = 'none';    // Скрываем карточку
+                        card.style.display = 'none';
                     }
                 });
-        
-                // Обновляем счетчик найденных рецептов на странице
                 document.querySelector('.recipes-header span').innerText = `найдено ${visible} рецептов`;
             });
         }

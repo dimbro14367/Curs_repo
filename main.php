@@ -39,19 +39,17 @@ $conn = getDB();
         }
         /* Навигационное меню - используется Flexbox */
         .nav-container {
-            max-width: 1400px;/* Максимальная ширина контейнера */
-            margin: 0 auto;/* Центрирование по горизонтали */
-            padding: 0 30px;/* Отступы слева и справа */
-            display: flex;/* Включаем flex-контейнер */
-            justify-content: space-between;/* Распределяем элементы по краям */
-            align-items: center;/* Выравниваем по вертикали */
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        /* Левая и правая части меню */
         .menu-left, .menu-right {
-            display: flex;/* Включаем flex-контейнер */
-            gap: 8px;/* Расстояние между кнопками */
-            flex-wrap: wrap;/* Перенос на новую строку при нехватке места */
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .menu-btn {
             display: inline-block;
@@ -204,18 +202,22 @@ $conn = getDB();
         }
         /* Сетка карточек рецептов - используется CSS Grid Layout */
         .recipe-grid {
-            display: grid;                              /* Включаем grid-контейнер */
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));  
-            /* Автоматическое заполнение колонками шириной от 350px */
-            gap: 30px;                                 /* Отступы между карточками */
-            margin-top: 20px;                          /* Отступ сверху */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
         }
+
+        /* Карточка рецепта - с фиксацией нижней части */
         .recipe-card {
             background: white;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .recipe-card:hover {
             transform: translateY(-5px);
@@ -228,20 +230,28 @@ $conn = getDB();
         }
         .recipe-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
         .recipe-content h3 {
             font-size: 20px;
             margin-bottom: 10px;
+            color: #4a3b2f;
         }
         .recipe-content p {
             color: #7f6e5d;
             margin-bottom: 15px;
             font-size: 14px;
+            flex: 1;
         }
         .recipe-meta {
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px solid #f0e0d0;
+            border-bottom: 1px solid #f0e0d0;
             font-size: 14px;
             color: #6b4e3a;
         }
@@ -255,6 +265,8 @@ $conn = getDB();
             border-radius: 30px;
             font-weight: bold;
             transition: 0.3s;
+            text-align: center;
+            margin-top: auto;
         }
         .recipe-btn:hover {
             background: #FF6B4A;
@@ -310,23 +322,19 @@ $conn = getDB();
         }
         /* Адаптация для мобильных устройств (ширина экрана до 768px) */
         @media (max-width: 768px) {
-    
-            /* Навигационное меню становится вертикальным */
             .nav-container { 
-            flex-direction: column;  /* Элементы располагаются в колонку (сверху вниз) */
-            gap: 15px;               /* Расстояние между кнопками меню */
+                flex-direction: column;
+                gap: 15px;
             }
-    
-            /* Уменьшаем размер главного заголовка на мобильных */
             .hero-content h1 { 
-                font-size: 32px;         /* На телефонах шрифт меньше, чтобы помещался на экране */
+                font-size: 32px;
             }
-    
-            /* Подвал сайта из 4 колонок превращается в 1 колонку */
             .footer-container { 
-                grid-template-columns: 1fr;  /* Одна колонка на всю ширину экрана */
+                grid-template-columns: 1fr;
             }
-    
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
